@@ -2,11 +2,11 @@ import {useState} from 'react';
 import moment from 'moment';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
-import Select from './Select.Component';
 import * as actions from '../store/actions/actions';
 import Modal from './Modal';
 import {Button} from './Button';
 import {typeScale} from '../utills';
+import { useForm } from "react-hook-form";
 
 const FormWrapper = styled.div`
     display: flex;
@@ -48,18 +48,50 @@ const ModalText = styled.p`
     margin: 0 0 16px 0;
 `;
 
+const FlexWrapperSelect = styled.div`
+    display: flex;
+    font-size: ${typeScale.helperText};
+    align-items: center;
+    margin-right: 15px;
+`;
+
+const SelectDropDown = styled.select`
+  width: 150px;
+  height: 35px;
+  background: ${props => props.theme.primaryColor};
+  color: ${props => props.theme.textColorInverted};
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  margin-left: 5px;
+  option {
+    color: black;
+    background: white;
+    display: flex;
+    white-space: pre;
+    min-height: 20px;
+    padding: 10px 5px;
+  }
+  &:active{
+        border: none;
+        outline: none;
+    }
+`;
+
 
 const CreateAppointmentForm = (props) => {
-    // console.log("CREATE",props);
     const {createAppointments,isCreateAppointmentFormOpen,setIsCreateAppointmentFormOpen} = props;
-    const [name,setName] = useState('');
-    const [gender,setGender] = useState('Female');
-    const [age,setAge] = useState('');
-    const [date,setDate] = useState('');
-    const [time,setTime] = useState('');
 
-    const handleFormSubmit = () => {
-        if(!name || !gender || !age || !date || !time) return alert('Empty Field!');
+    const { register, handleSubmit, formState: { errors } } = useForm();
+
+    const handleFormSubmit = (data) => {
+        const {
+            name,
+            gender,
+            age,
+            time,
+            date
+        } = data;
         const formatedDate = moment(date).format('DD-MM-YYYY');
         const dateForAppointmentKey = moment(date).format('MM-YYYY');
         // console.log({
@@ -79,11 +111,6 @@ const CreateAppointmentForm = (props) => {
             dateForAppointmentKey
         });
         setIsCreateAppointmentFormOpen(false);
-        setName('');
-        setAge('');
-        setGender('Female');
-        setDate('');
-        setTime('')
     }
     
     return(
@@ -95,20 +122,16 @@ const CreateAppointmentForm = (props) => {
                     <FormLabel>Name</FormLabel>
                     <StyledInputElement 
                         type="text" 
-                        value={name} 
                         placeholder="Enter Name" 
-                        onChange={e=>setName(e.target.value)}
-                        required
+                        {...register('name', { required: true, maxLength: 30 })} 
                     />
                 </FormGroup>
                 <FormGroup>
                     <FormLabel>Age</FormLabel>
                     <StyledInputElement 
-                        value={age} 
                         placeholder="18" 
                         type="number" 
-                        onChange={e=>setAge(e.target.value)}
-                        required
+                        {...register('age', { required: true})} 
                     />
                 </FormGroup>
                 <FormGroup>
@@ -117,9 +140,7 @@ const CreateAppointmentForm = (props) => {
                         type="date" 
                         min="2019-01-01" 
                         max="2021-12-31"
-                        value={date}
-                        onChange={e => setDate(e.target.value)}
-                        required
+                        {...register('date', { required: true})}
                     />
                 </FormGroup>
                 <FormGroup>
@@ -128,19 +149,19 @@ const CreateAppointmentForm = (props) => {
                         type="time" 
                         min="09:00" 
                         max="18:00"
-                        value={time}
-                        onChange={e => setTime(e.target.value)}
-                        required
+                        {...register('time', { required: true})}
                     />
                 </FormGroup>
-                <Select 
-                    list={['Male','Female']}
-                    value={gender}
-                    changeHandler={(e) => setGender(e.target.value)}
-                    label="Select Gender"
-                />
+                <FlexWrapperSelect>
+                    <FormLabel>Select Gender</FormLabel>
+                    <SelectDropDown {...register('gender')}>
+                        {['Male','Female'].map((value) => (
+                            <option value={value} key={value}>{value}</option>
+                        ))}
+                    </SelectDropDown>
+                </FlexWrapperSelect>
             </FormWrapper>
-            <Button onClick={handleFormSubmit}>Submit</Button>
+            <Button onClick={handleSubmit(handleFormSubmit)}>Submit</Button>
             
         </Modal>
     )

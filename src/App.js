@@ -1,8 +1,8 @@
-import { Route, Switch, Router } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import HomeContainer from './HomeContainer';
 import CalenderContainer from './CalenderContainer';
 
-const App = (props) => {
+const App = () => {
   return(
     <Switch>
       <Route path="/year/:year/month/:month" component={CalenderContainer} />

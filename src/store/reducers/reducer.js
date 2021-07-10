@@ -27,21 +27,18 @@ const reducer = (state = initialState, action) => {
                 appointments: action.payload === undefined ? {} : action.payload,
             }
         case actionTypes.CREATE_APPOINTMENT:
-            // console.log(action.payload);
             const {name,age,gender,time,formatedDate,dateForAppointmentKey} = action.payload;
             const appointment = {name,age,gender,formatedDate,time}
             const checkIfCurrentKeyExist = state.appointments[dateForAppointmentKey];
             if(checkIfCurrentKeyExist) {
                const checkIfCurrentDateExist =  checkIfCurrentKeyExist[formatedDate];
                if(checkIfCurrentDateExist) {
-                //    console.log("DUPLICATE",state.appointments[dateForAppointmentKey])
                 return {
                     ...state,
                     appointments: {
                         ...state.appointments,
                         [dateForAppointmentKey]: {
                             ...state.appointments[dateForAppointmentKey],
-                            // ...state.appointments[checkIfCurrentKeyExist],
                             [formatedDate]: [...checkIfCurrentDateExist,appointment]
                         }
                     }

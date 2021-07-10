@@ -7,7 +7,7 @@ const HomeContainer = (props) => {
         <div>
             Please visit /year/2020/month/1 
             <br/>
-            <Link to={`/year/${currentDate[1]}/month/${currentDate[0]*1}`}>Or Start With Current Date</Link>
+            <Link to={`/year/${currentDate[1]}/month/${currentDate[0]*1}`}>Or Click Start With Current Date</Link>
         </div>
     )
 }

@@ -20,8 +20,8 @@ const AppointMentDetails = (props) => {
     const {name,age,gender,formatedDate,time} = appointmentDetails;
     return(
         <Modal showModal={isDetailsModalOpen} setShowModal={setIsDetailsModalOpen}>          
-            <ModalHeader>Appointment Detaials!</ModalHeader>
-            <ModalText>Here are the details about the Appointment!</ModalText>
+            <ModalHeader>Appointment Details!</ModalHeader>
+            <ModalText>Here are the Appointment details!</ModalText>
             <p>Name: {name}</p>
             <p>Age: {age}</p>
             <p>Gender: {gender}</p>
