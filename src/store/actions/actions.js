@@ -20,3 +20,10 @@ export const createAppointment = (payload) => {
         payload
     }
 }
+
+export const loadFromCache = (payload) => {
+    return{
+        type: actionTypes.LOAD_FROM_CACHE,
+        payload
+    }
+}

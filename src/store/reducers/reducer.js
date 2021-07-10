@@ -21,6 +21,11 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 dates: action.payload
             }  
+        case actionTypes.LOAD_FROM_CACHE:
+            return{
+                ...state,
+                appointments: action.payload === undefined ? {} : action.payload,
+            }
         case actionTypes.CREATE_APPOINTMENT:
             // console.log(action.payload);
             const {name,age,gender,time,formatedDate,dateForAppointmentKey} = action.payload;
@@ -29,7 +34,7 @@ const reducer = (state = initialState, action) => {
             if(checkIfCurrentKeyExist) {
                const checkIfCurrentDateExist =  checkIfCurrentKeyExist[formatedDate];
                if(checkIfCurrentDateExist) {
-                   console.log("DUPLICATE",state.appointments[dateForAppointmentKey])
+                //    console.log("DUPLICATE",state.appointments[dateForAppointmentKey])
                 return {
                     ...state,
                     appointments: {
